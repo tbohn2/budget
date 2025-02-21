@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Budget_App.Models;
+using System.Reflection;
 
 namespace Budget_App.Data
 {
@@ -23,6 +24,28 @@ namespace Budget_App.Data
                 .HasOne(m => m.Earnings)
                 .WithOne(e => e.Month)
                 .HasForeignKey<Earnings>(e => e.MonthId);
+
+            var decimalPropertiesExpenses = typeof(Expenses)
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(p => p.PropertyType == typeof(decimal));
+
+            foreach (var property in decimalPropertiesExpenses)
+            {
+                modelBuilder.Entity<Expenses>()
+                    .Property(property.Name)
+                    .HasPrecision(18, 2);
+            }
+
+            var decimalPropertiesEarnings = typeof(Earnings)
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(p => p.PropertyType == typeof(decimal));
+
+            foreach (var property in decimalPropertiesEarnings)
+            {
+                modelBuilder.Entity<Earnings>()
+                    .Property(property.Name)
+                    .HasPrecision(18, 2);
+            }
 
             base.OnModelCreating(modelBuilder);
         }
