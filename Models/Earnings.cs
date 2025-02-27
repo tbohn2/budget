@@ -8,6 +8,5 @@ namespace Budget_App.Models
         public decimal Secondary { get; set; } = 0;
         public decimal Gifts { get; set; } = 0;
         public int MonthId { get; set; } = 0;
-        public Month Month { get; set; } = null!;
     }
 }

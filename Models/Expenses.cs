@@ -16,6 +16,5 @@ namespace Budget_App.Models
         public decimal Holiday { get; set; } = 0;
         public decimal Misc { get; set; } = 0;
         public int MonthId { get; set; } = 0;
-        public Month Month { get; set; } = null!;
     }
 }
