@@ -17,19 +17,19 @@ namespace Budget_App.Data
         {
             modelBuilder.Entity<Year>()
                 .HasMany(y => y.Months)
-                .WithOne(m => m.Year)
+                .WithOne()
                 .HasForeignKey(m => m.YearId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Month>()
                 .HasOne(m => m.Earnings)
-                .WithOne(e => e.Month)
+                .WithOne()
                 .HasForeignKey<Earnings>(e => e.MonthId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Month>()
                 .HasOne(m => m.Expenses)
-                .WithOne(e => e.Month)
+                .WithOne()
                 .HasForeignKey<Expenses>(e => e.MonthId)
                 .OnDelete(DeleteBehavior.Cascade);
 
