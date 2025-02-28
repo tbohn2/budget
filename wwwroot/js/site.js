@@ -1,4 +1,6 @@
-﻿async function getYear(year) {
+﻿let yearVal = new Date().getFullYear();
+
+async function getYear(year) {
     const response = await fetch(`Year/${year}`,
         {
             method: "GET",
@@ -25,16 +27,37 @@ async function addYear(yearValue) {
     return await response.json();
 }
 
-$('#addYear').click(async function () {
-    const yearValue = $('#yearInput').val();
-    const year = await addYear(yearValue);
-    console.log(year);
+async function renderBudget(data) {
+    console.log(data);
+
+    const months = data.months;
+
+    months.forEach(month => {
+
+    });
 }
-);
 
 $(document).ready(async function () {
-    const yearVal = $('#year').text();
-    const year = await getYear(yearVal);
-    console.log(year);
-}
-);
+    $('#year').text(yearVal);
+    // const year = await getYear(yearVal);
+    // renderBudget(year);
+
+    async function changeYear() {
+        $('#year').text(yearVal);
+        let year = await getYear(yearVal);
+
+        if (year == null) {
+            // year = await addYear(yearVal);
+        }
+    }
+
+    $('#prev').on('click', async function () {
+        yearVal--;
+        changeYear();
+    });
+
+    $('#next').on('click', async function () {
+        yearVal++;
+        changeYear();
+    });
+});
