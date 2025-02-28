@@ -26,8 +26,6 @@ namespace Budget_App.Controllers
         [HttpGet("Year/{year}")]
         public async Task<IActionResult> GetYear(int year)
         {
-            Console.WriteLine(year);
-
             var yearObj = await _context.Years
                 .Include(y => y.Months)
                     .ThenInclude(m => m.Earnings)
@@ -48,8 +46,6 @@ namespace Budget_App.Controllers
         {
             if (ModelState.IsValid)
             {
-                Console.WriteLine(year.YearValue);
-
                 year.Months = new List<Month>();
 
                 for (int monthIndex = 1; monthIndex <= 12; monthIndex++)
