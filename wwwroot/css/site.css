@@ -1,22 +1,23 @@
 h2 {
     font-size: 24px;
-    /* height: 28px; */
-    margin: 5px 0;
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
 }
 
-h3 {
+#categories {
+    width: 150px;
+}
+
+#categories p {
     height: 28px;
     font-size: 20px;
-    margin: 5px 0;
+    margin: 0;
+    padding: 0;
 }
 
-br {
-    height: 100px;
+.grid-square {
+    height: 28px;
 }
 
 input {
-    margin: 0px 0;
-    padding: 0;
+    height: 28px;
+    width: 100px;
 }
