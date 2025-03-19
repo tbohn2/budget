@@ -33,14 +33,40 @@ async function renderBudget(data) {
     const months = data.months;
 
     months.forEach(month => {
+        const id = month.name;
+        const earnings = month.earnings;
+        const expenses = month.expenses;
 
+        const display = `
+            <div class="grid-square space-holder"></div>
+            <input type="number" value="${earnings.primary}">
+            <input type="number" value="${earnings.secondary}">
+            <input type="number" value="${earnings.gifts}">
+            <div class="grid-square space-holder"></div>
+            <div class="grid-square space-holder"></div>
+            <input type="number" value="${expenses.carInsurance}">
+            <input type="number" value="${expenses.eatOut}">
+            <input type="number" value="${expenses.fast}">
+            <input type="number" value="${expenses.gas}">
+            <input type="number" value="${expenses.groceries}">
+            <input type="number" value="${expenses.holiday}">
+            <input type="number" value="${expenses.medical}">
+            <input type="number" value="${expenses.misc}">
+            <input type="number" value="${expenses.rent}">
+            <input type="number" value="${expenses.tithing}">
+            <input type="number" value="${expenses.vacation}">
+            <div class="grid-square space-holder"></div>
+            <div class="grid-square space-holder"></div>
+            `
+
+        $(`#${id}`).append(display)
     });
 }
 
 $(document).ready(async function () {
     $('#year').text(yearVal);
-    // const year = await getYear(yearVal);
-    // renderBudget(year);
+    const year = await getYear(yearVal);
+    renderBudget(year);
 
     async function changeYear() {
         $('#year').text(yearVal);
