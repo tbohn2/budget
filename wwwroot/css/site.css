@@ -2,11 +2,16 @@ h2 {
     font-size: 24px;
 }
 
+#budgetBody div:not(#categories) {
+    width: 100px;
+}
+
 #categories {
     width: 150px;
 }
 
 #categories p {
+    width: 150px;
     height: 28px;
     font-size: 20px;
     margin: 0;
@@ -15,6 +20,7 @@ h2 {
 
 .grid-square {
     height: 28px;
+    width: 100px;
 }
 
 input {
