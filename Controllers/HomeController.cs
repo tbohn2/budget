@@ -79,60 +79,86 @@ namespace Budget_App.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateExpenses([FromBody] Expenses expenses)
+        public async Task<IActionResult> UpdateExpenses([FromBody] List<Expenses> expensesList)
         {
-            if (ModelState.IsValid)
+            if (expensesList == null || expensesList.Count == 0)
             {
-                var existingExpense = await _context.Expenses.FindAsync(expenses.Id);
-
-                if (existingExpense == null)
-                {
-                    return NotFound();
-                }
-
-                existingExpense.Rent = expenses.Rent;
-                existingExpense.Tithing = expenses.Tithing;
-                existingExpense.Fast = expenses.Fast;
-                existingExpense.Groceries = expenses.Groceries;
-                existingExpense.Gas = expenses.Gas;
-                existingExpense.CarInsurance = expenses.CarInsurance;
-                existingExpense.Medical = expenses.Medical;
-                existingExpense.EatOut = expenses.EatOut;
-                existingExpense.Vacation = expenses.Vacation;
-                existingExpense.Holiday = expenses.Holiday;
-                existingExpense.Misc = expenses.Misc;
-
-                await _context.SaveChangesAsync();
-
-                return Json(existingExpense);
+                return BadRequest("No changes in expenses provided.");
             }
 
-            return Json(expenses);
+            var updatedExpenses = new List<Expenses>();
+
+            foreach (var expenses in expensesList)
+            {
+                if (ModelState.IsValid)
+                {
+                    var existingExpense = await _context.Expenses.FindAsync(expenses.Id);
+
+                    if (existingExpense != null)
+                    {
+                        existingExpense.Rent = expenses.Rent;
+                        existingExpense.Tithing = expenses.Tithing;
+                        existingExpense.Fast = expenses.Fast;
+                        existingExpense.Groceries = expenses.Groceries;
+                        existingExpense.Gas = expenses.Gas;
+                        existingExpense.CarInsurance = expenses.CarInsurance;
+                        existingExpense.Medical = expenses.Medical;
+                        existingExpense.EatOut = expenses.EatOut;
+                        existingExpense.Vacation = expenses.Vacation;
+                        existingExpense.Holiday = expenses.Holiday;
+                        existingExpense.Misc = expenses.Misc;
+
+                        updatedExpenses.Add(existingExpense);
+                    }
+                    else
+                    {
+                        return NotFound($"Expense with ID {expenses.Id} not found.");
+                    }
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Json(updatedExpenses);
         }
+
 
         [HttpPut]
-        public async Task<IActionResult> UpdateEarnings([FromBody] Earnings earnings)
+        public async Task<IActionResult> UpdateEarnings([FromBody] List<Earnings> earningsList)
         {
-            if (ModelState.IsValid)
+            if (earningsList == null || earningsList.Count == 0)
             {
-                var existingEarnings = await _context.Earnings.FindAsync(earnings.Id);
-
-                if (existingEarnings == null)
-                {
-                    return NotFound();
-                }
-
-                existingEarnings.Primary = earnings.Primary;
-                existingEarnings.Secondary = earnings.Secondary;
-                existingEarnings.Gifts = earnings.Gifts;
-
-                await _context.SaveChangesAsync();
-
-                return Json(existingEarnings);
+                return BadRequest("No changes in earnings provided.");
             }
 
-            return Json(earnings);
+            var updatedEarnings = new List<Earnings>();
+
+            foreach (var earnings in earningsList)
+            {
+                if (ModelState.IsValid)
+                {
+                    var existingEarnings = await _context.Earnings.FindAsync(earnings.Id);
+
+                    if (existingEarnings != null)
+                    {
+                        existingEarnings.Primary = earnings.Primary;
+                        existingEarnings.Secondary = earnings.Secondary;
+                        existingEarnings.Gifts = earnings.Gifts;
+
+                        updatedEarnings.Add(existingEarnings);
+                    }
+                    else
+                    {
+                        return NotFound($"Earnings with ID {earnings.Id} not found.");
+                    }
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Json(updatedEarnings);
         }
+
 
         [HttpDelete("DeleteYear/{id}")]
         public async Task<IActionResult> DeleteYear(int id)
