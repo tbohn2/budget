@@ -78,7 +78,7 @@ namespace Budget_App.Controllers
             return Json(year);
         }
 
-        [HttpPut]
+        [HttpPut("UpdateExpenses")]
         public async Task<IActionResult> UpdateExpenses([FromBody] List<Expenses> expensesList)
         {
             if (expensesList == null || expensesList.Count == 0)
@@ -123,7 +123,7 @@ namespace Budget_App.Controllers
         }
 
 
-        [HttpPut]
+        [HttpPut("UpdateEarnings")]
         public async Task<IActionResult> UpdateEarnings([FromBody] List<Earnings> earningsList)
         {
             if (earningsList == null || earningsList.Count == 0)
