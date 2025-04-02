@@ -16,20 +16,6 @@ async function getYear(year) {
     return await response.json();
 }
 
-async function addYear(yearValue) {
-    const newYear = {
-        YearValue: yearValue,
-    };
-
-    const response = await fetch("/AddYear", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newYear),
-    });
-
-    return await response.json();
-}
-
 async function updateEarnings() {
     const array = Object.values(earningsToUpdate);
 
@@ -154,10 +140,8 @@ $(document).ready(async function () {
     async function changeYear() {
         $('#year').text(yearVal);
         year = await getYear(yearVal);
-
-        if (year == null) {
-            // year = await addYear(yearVal);
-        }
+        $('.values').remove();
+        renderBudget(year);
     }
 
     $('#prev').on('click', async function () {

@@ -35,14 +35,15 @@ namespace Budget_App.Controllers
 
             if (yearObj == null)
             {
-                return NotFound();
+                var newYear = new Year();
+                newYear.YearValue = year;
+                return await AddYear(newYear);
             }
+
             return Json(yearObj);
         }
 
-
-        [HttpPost("AddYear")]
-        public async Task<IActionResult> AddYear([FromBody] Year year)
+        public async Task<IActionResult> AddYear(Year year)
         {
             if (ModelState.IsValid)
             {
@@ -71,8 +72,6 @@ namespace Budget_App.Controllers
 
                 _context.Years.Add(year);
                 await _context.SaveChangesAsync();
-
-                // return RedirectToAction("Index");
             }
 
             return Json(year);
