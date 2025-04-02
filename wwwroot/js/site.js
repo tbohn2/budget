@@ -29,6 +29,30 @@ async function addYear(yearValue) {
     return await response.json();
 }
 
+async function updateEarnings() {
+    const array = Object.values(earningsToUpdate);
+
+    const response = await fetch("/UpdateEarnings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(array),
+    });
+
+    console.log(await response.json());
+}
+
+async function updateExpenses() {
+    const array = Object.values(expensesToUpdate);
+
+    const response = await fetch("/UpdateExpenses", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(array),
+    });
+
+    console.log(await response.json());
+}
+
 async function getTotal(object) {
     const array = Object.entries(object);
     let total = 0
@@ -63,7 +87,8 @@ async function renderBudget(data) {
     const months = data.months;
 
     for (const month of months) {
-        const id = month.name;
+        const id = month.id;
+        const monthName = month.name;
         const earnings = month.earnings;
         const expenses = month.expenses;
 
@@ -76,7 +101,7 @@ async function renderBudget(data) {
                 <input name="primary" data-id="${earnings.id}" class="earnings" type="number" value="${earnings.primary}">
                 <input name="secondary" data-id="${earnings.id}" class="earnings" type="number" value="${earnings.secondary}">
                 <input name="gifts" data-id="${earnings.id}" class="earnings" type="number" value="${earnings.gifts}">
-                <div class="grid-square space-holder">${earningsTotal}</div>
+                <div name="earningsTotal" data-id="${id}" class="grid-square space-holder">${earningsTotal}</div>
                 <div class="grid-square space-holder"></div>
                 <input name="carInsurance" data-id="${expenses.id}" class="expenses" type="number" value="${expenses.carInsurance}">
                 <input name="eatOut" data-id="${expenses.id}" class="expenses" type="number" value="${expenses.eatOut}">
@@ -89,12 +114,12 @@ async function renderBudget(data) {
                 <input name="rent" data-id="${expenses.id}" class="expenses" type="number" value="${expenses.rent}">
                 <input name="tithing" data-id="${expenses.id}" class="expenses" type="number" value="${expenses.tithing}">
                 <input name="vacation" data-id="${expenses.id}" class="expenses" type="number" value="${expenses.vacation}">
-                <div class="grid-square space-holder">${expensesTotal}</div>
-                <div class="grid-square space-holder">${earningsTotal - expensesTotal}</div>
+                <div name="expensesTotal" data-id="${id}" class="grid-square space-holder">${expensesTotal}</div>
+                <div name="netTotal" data-id="${id}" class="grid-square space-holder">${earningsTotal - expensesTotal}</div>
             </div>
             `
 
-        $(`#${id}`).append(display)
+        $(`#${monthName}`).append(display)
     };
 
     $('body').on('change', '.earnings, .expenses', function () {
@@ -131,4 +156,18 @@ $(document).ready(async function () {
         yearVal++;
         changeYear();
     });
+
+    $('#save').on('click', async function () {
+        if (Object.keys(earningsToUpdate).length > 0) {
+            updateEarnings();
+        }
+        if (Object.keys(expensesToUpdate).length > 0) {
+            updateExpenses();
+        }
+    })
+
+    $('#cancel').on('click', async function () {
+        earningsToUpdate = {};
+        expensesToUpdate = {};
+    })
 });
