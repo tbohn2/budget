@@ -86,7 +86,6 @@ async function renderBudget(data) {
     const months = data.months;
 
     for (const month of months) {
-        const id = month.id;
         const monthName = month.name;
         const earnings = month.earnings;
         const expenses = month.expenses;
@@ -163,10 +162,62 @@ $(document).ready(async function () {
         }
     })
 
-    $('#cancel').on('click', async function () {
-        earningsToUpdate = {};
-        expensesToUpdate = {};
-        $('.values').remove();
-        renderBudget(year);
+    $('#cancel').on('click', function () {
+        if (Object.keys(earningsToUpdate).length > 0 || Object.keys(expensesToUpdate).length > 0) {
+            earningsToUpdate = {};
+            expensesToUpdate = {};
+            $('.values').remove();
+            renderBudget(year);
+        }
+    })
+
+    $('#delete').on('click', function handleDelete() {
+        $('#delete').off()
+        $('#delete').html('Delete all data for this year? 3')
+        $('#delete').after('<button id="cancelDelete" class="btn btn-dark">Cancel</button>')
+
+        let timer = 3;
+        const timerInterval = setInterval(() => {
+            timer--;
+            if (timer < 1) {
+                $('#delete').html(`Delete all data for this year?`);
+                clearInterval(timerInterval);
+                return;
+            }
+            $('#delete').html(`Delete all data for this year? ${timer}`);
+        }, 1000);
+
+        function resetDelete() {
+            clearInterval(timerInterval);
+            clearTimeout(attachEventListenerTimeout);
+            $('#cancelDelete').remove();
+            $('#delete').html('Clear Data');
+            $('#delete').off().on('click', handleDelete);
+        }
+
+        $('#cancelDelete').off().on('click', resetDelete);
+
+        const attachEventListenerTimeout = setTimeout(() => {
+            $('#delete').off().on('click', async function deleteYear() {
+                const response = await fetch(`DeleteYear/${year.id}`,
+                    {
+                        method: "DELETE",
+                        headers: { "Content-Type": "application/json" },
+                    })
+                if (!response.ok) {
+                    console.error("Year not found");
+                    return null;
+                }
+                console.log('Deleted year:', await response.json());
+
+                resetDelete();
+
+                yearVal = new Date().getFullYear();
+                $('#year').text(yearVal);
+                year = await getYear(yearVal);
+                $('.values').remove();
+                renderBudget(year);
+            })
+        }, 3000);
     })
 });
