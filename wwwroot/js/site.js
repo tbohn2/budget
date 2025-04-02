@@ -65,8 +65,14 @@ async function getTotal(object) {
     return total;
 }
 
-function handleChange(className, newValue, name, id) {
+async function handleChange(className, newValue, name, id) {
     objectToUpdate = className === "earnings" ? earningsToUpdate : expensesToUpdate;
+
+    const totalName = className === "earnings" ? "earningsTotal" : "expensesTotal"
+    const currentTotal = $(`div[name=${totalName}][data-id="${id}"]`).html();
+
+    console.log(currentTotal);
+
 
     if (objectToUpdate[id] === undefined) {
         const newObject = {};
@@ -81,6 +87,15 @@ function handleChange(className, newValue, name, id) {
     } else {
         objectToUpdate[id][name] = newValue;
     }
+
+    const newTotal = await getTotal(objectToUpdate[id])
+    const change = newTotal - currentTotal
+    $(`div[name=${totalName}][data-id="${id}"]`).html(newTotal);
+
+    const currentNet = parseInt($(`div[name="netTotal"][data-id="${id}"]`).html());
+    const newNet = className === "earnings" ? currentNet + change : currentNet - change;
+
+    $(`div[name="netTotal"][data-id="${id}"]`).html(newNet);
 }
 
 async function renderBudget(data) {
@@ -101,7 +116,7 @@ async function renderBudget(data) {
                 <input name="primary" data-id="${earnings.id}" class="earnings" type="number" value="${earnings.primary}">
                 <input name="secondary" data-id="${earnings.id}" class="earnings" type="number" value="${earnings.secondary}">
                 <input name="gifts" data-id="${earnings.id}" class="earnings" type="number" value="${earnings.gifts}">
-                <div name="earningsTotal" data-id="${id}" class="grid-square space-holder">${earningsTotal}</div>
+                <div name="earningsTotal" data-id="${earnings.id}" class="grid-square space-holder">${earningsTotal}</div>
                 <div class="grid-square space-holder"></div>
                 <input name="carInsurance" data-id="${expenses.id}" class="expenses" type="number" value="${expenses.carInsurance}">
                 <input name="eatOut" data-id="${expenses.id}" class="expenses" type="number" value="${expenses.eatOut}">
@@ -114,8 +129,8 @@ async function renderBudget(data) {
                 <input name="rent" data-id="${expenses.id}" class="expenses" type="number" value="${expenses.rent}">
                 <input name="tithing" data-id="${expenses.id}" class="expenses" type="number" value="${expenses.tithing}">
                 <input name="vacation" data-id="${expenses.id}" class="expenses" type="number" value="${expenses.vacation}">
-                <div name="expensesTotal" data-id="${id}" class="grid-square space-holder">${expensesTotal}</div>
-                <div name="netTotal" data-id="${id}" class="grid-square space-holder">${earningsTotal - expensesTotal}</div>
+                <div name="expensesTotal" data-id="${expenses.id}" class="grid-square space-holder">${expensesTotal}</div>
+                <div name="netTotal" data-id="${expenses.id}" class="grid-square space-holder">${earningsTotal - expensesTotal}</div>
             </div>
             `
 
