@@ -1,4 +1,5 @@
 ﻿let yearVal = new Date().getFullYear();
+let year = {};
 let earningsToUpdate = {};
 let expensesToUpdate = {};
 
@@ -70,9 +71,6 @@ async function handleChange(className, newValue, name, id) {
 
     const totalName = className === "earnings" ? "earningsTotal" : "expensesTotal"
     const currentTotal = $(`div[name=${totalName}][data-id="${id}"]`).html();
-
-    console.log(currentTotal);
-
 
     if (objectToUpdate[id] === undefined) {
         const newObject = {};
@@ -150,12 +148,12 @@ async function renderBudget(data) {
 
 $(document).ready(async function () {
     $('#year').text(yearVal);
-    const year = await getYear(yearVal);
+    year = await getYear(yearVal);
     renderBudget(year);
 
     async function changeYear() {
         $('#year').text(yearVal);
-        let year = await getYear(yearVal);
+        year = await getYear(yearVal);
 
         if (year == null) {
             // year = await addYear(yearVal);
@@ -184,5 +182,7 @@ $(document).ready(async function () {
     $('#cancel').on('click', async function () {
         earningsToUpdate = {};
         expensesToUpdate = {};
+        $('.values').remove();
+        renderBudget(year);
     })
 });
