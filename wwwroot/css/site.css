@@ -1,10 +1,73 @@
+:root {
+    --green: #009447;
+    --red: rgb(163, 18, 18);
+    --grey: rgb(87, 98, 110);
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.text-green {
+    color: var(--green);
+}
+
+.btn-success {
+    border-color: var(--green);
+    background-color: var(--green) !important;
+}
+
+.btn-success:hover {
+    color: var(--green) !important;
+    background-color: transparent !important;
+}
+
+.btn-danger {
+    background-color: var(--red);
+    border-color: var(--red);
+}
+
+.btn-danger:hover {
+    background-color: transparent !important;
+}
+
+.btn-secondary {
+    background-color: var(--grey);
+    border-color: var(--grey);
+}
+
+.btn-secondary:hover {
+    background-color: transparent !important;
+}
+
+#year {
+    font-size: 50px;
+}
+
+.change-year {
+    font-size: 40px;
+    padding: 0;
+    color: var(--green);
+    border: none;
+    background-color: transparent;
+}
+
+.change-year:hover {
+    color: white;
+    transition: all 0.5s;
+}
+
+.money-img {
+    height: 50px;
+}
+
 h2 {
     font-size: 24px;
 }
 
 /* columns */
 #budgetBody div:not(#categories) {
-    width: 7vw;
+    width: 7.25vw;
 }
 
 #categories {
@@ -21,10 +84,14 @@ h2 {
 
 .grid-square {
     height: 28px;
-    width: 7vw;
+    width: 7.25vw;
+}
+
+.space-holder {
+    padding-left: 4px;
 }
 
 input {
     height: 28px;
-    width: 7vw;
+    width: 7.25vw;
 }

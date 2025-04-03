@@ -174,7 +174,7 @@ $(document).ready(async function () {
     $('#delete').on('click', function handleDelete() {
         $('#delete').off()
         $('#delete').html('Delete all data for this year? 3')
-        $('#delete').after('<button id="cancelDelete" class="btn btn-dark">Cancel</button>')
+        $('#delete').after('<button id="cancelDelete" class="btn btn-secondary">Cancel</button>')
 
         let timer = 3;
         const timerInterval = setInterval(() => {
